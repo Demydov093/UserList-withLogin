@@ -1,0 +1,29 @@
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Last Name</th>
+    <th>Email</th>
+    <th>Date Of Birth</th>
+    <th>Role</th>
+    <th></th>
+    <th>    </th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr *ngFor="let user of users | paginate: { itemsPerPage: number, currentPage: p }">
+    <td>{{user.name}}</td>
+    <td>{{user.lastname}}</td>
+    <td>{{user.email}}</td>
+    <td>{{user.dateOfBirth | date: "dd.MM.yyyy" }}</td>
+    <td>{{user.role}}</td>
+    <td><button type="button"(click)="onSelect(user)" class="btn btn-primary">Update</button></td>
+    <td><button type="button" (click)="deleteUser(user)" class="btn btn-danger">Delete</button><td>
+  </tr>
+  </tbody>
+  <div style="display: inline-block">
+  <p>Items per page</p>
+  <input type="number" [(ngModel)]="number"></div>
+  <pagination-controls (pageChange)=" p =$event" style="display: inline-block; width: 250px;"></pagination-controls>
+</table>

@@ -1,0 +1,9 @@
+.full-width-div{
+  background: rgba(192,192,192,0.5);
+  height: 100%;
+  width:100%;
+  position: absolute;
+  z-index:900;
+  left:0;
+  top:0;
+}

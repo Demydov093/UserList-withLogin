@@ -1,0 +1,39 @@
+
+<div class="full-width-div">
+  <div class = "row">
+    <div class="col-md-2 col-md-offset-5">
+      <div  style="z-index: 999; position: absolute; width: 500px;">
+        <h2>Update</h2>
+  <form #f="ngForm" class="well">
+    <div class="form-group">
+      <small>(Min 2 Max 60 chars)</small>
+    <input type="input" class="form-control" name="name" required placeholder="name" minlength="2" maxlength="60" [(ngModel)]="user.name">
+  </div>
+    <div class="form-group">
+      <small>(Min 2 Max 60 chars)</small>
+    <input type="input" class="form-control" name="lastname" required placeholder="lastname" minlength="2" maxlength="60"  [(ngModel)]="user.lastname">
+  </div>
+    <div class="form-group">
+      <small>(Max 99 chars)</small>
+      <input type="email" class="form-control" name="email" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" placeholder="email" maxlength="99"  [(ngModel)]="user.email">
+    </div>
+    <div class="form-group">
+      <input type="date" class="form-control" name="dateOfBirth" required placeholder="dateOfBirth" [ngModel]="user.dateOfBirth | date: 'yyyy-MM-dd'">
+    </div>
+    <div class="form-group">
+      <small>(Example: aS12, Min 4 Max 8 chars)</small>
+      <input type="input" class="form-control" name="password" required disabled="disabled"  placeholder="password" [(ngModel)]="user.password">
+    </div>
+    <div class="form-group">
+      <select  type="input" class="form-control" name="role" required  placeholder="role" [(ngModel)]="user.role">
+        <option>admin</option>
+        <option>viewer</option>
+      </select>
+    </div>
+    <button type="button" (click)="updateUser(f.value)"  [disabled] ="!f.valid" class="btn btn-primary">Update</button>
+    <button type="button" (click)="Close()" class="btn btn-default">Close</button>
+  </form>
+  </div>
+  </div>
+  </div>
+</div>
