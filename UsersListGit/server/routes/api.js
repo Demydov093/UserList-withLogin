@@ -19,55 +19,59 @@ router.get("/users", function (req, res) {
     if (req.get("Authorization") === "Bearer my-jwt-token") {
         const p = +req.get("p") - 1;
         const number = +req.get("number");
-        console.log(p);
-        console.log(number);
-        User.find({}).limit(number).skip(number * p)
-            .exec(function (err, users) {
-                if (err) {
-                    console.log("Error get users");
-                } else {
-                    res.json(users);
+        if (p >= 0) {
+            User.find({}).limit(number).skip(number * p)
+                .exec(function (err, users) {
+                    if (err) {
+                        console.log("Error get users");
+                    } else {
+                        res.json(users);
 
-                }
-            });
+                    }
+                });
+        }
     }
 });
 router.get("/userscount", function (req, res) {
     console.log("Get all users count");
-    User.count({})
-        .exec(function (err, count) {
-            if (err) {
-                console.log("Error get users");
-            } else {
-                res.json({success: true, count: count});
-                console.log(count);
-            }
-        });
+    if (req.get("Authorization") === "Bearer my-jwt-token") {
+        User.count({})
+            .exec(function (err, count) {
+                if (err) {
+                    console.log("Error get users");
+                } else {
+                    res.json({success: true, count: count});
+                    console.log(count);
+                }
+            });
+    }
 });
 router.get("/userssearch", function (req, res) {
     console.log("Get search");
-    const search1 = new RegExp(`^${req.get("search1")}.*$`, 'i');
-    const search2 = new RegExp(`^${req.get("search2")}.*$`, 'i');
-    console.log(req.get("search1"));
-    console.log(req.get("search2"));
-    if (req.get("search2") === "" || req.get("search2") === " ") {
-        User.find({ $or: [{name: search1}, {lastname: search1}, {email: search1}]})
-            .exec(function (err, users) {
-                if (err) {
-                    console.log("Error get users");
-                } else {
-                    res.json(users);
-                }
-            });
-    } else {
-        User.find({ $and: [{name: req.get("search1")}, {lastname: req.get("search2")}]})
-            .exec(function (err, users) {
-                if (err) {
-                    console.log("Error get users");
-                } else {
-                    res.json(users);
-                }
-            });
+    if (req.get("Authorization") === "Bearer my-jwt-token") {
+        const search1 = new RegExp(`^${req.get("search1")}.*$`, 'i');
+        const search2 = new RegExp(`^${req.get("search2")}.*$`, 'i');
+        console.log(req.get("search1"));
+        console.log(req.get("search2"));
+        if (req.get("search2") === "" || req.get("search2") === " ") {
+            User.find({ $or: [{name: search1}, {lastname: search1}, {email: search1}]})
+                .exec(function (err, users) {
+                    if (err) {
+                        console.log("Error get users");
+                    } else {
+                        res.json(users);
+                    }
+                });
+        } else {
+            User.find({ $and: [{name: search1}, {lastname: req.get(search2)}]})
+                .exec(function (err, users) {
+                    if (err) {
+                        console.log("Error get users");
+                    } else {
+                        res.json(users);
+                    }
+                });
+        }
     }
 });
 
