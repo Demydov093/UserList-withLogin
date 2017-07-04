@@ -16,17 +16,31 @@ export class UserService {
   private _postUrl = '/api/user';
   private _putUrl = '/api/user/';
   private _deleteUrl = '/api/user/';
+  public count: number;
   constructor(private _http: Http, private authenticationService: AuthenticationService) { }
 
-   getUsers(): Observable<User[]>  {
+   getUsers(p: any, number: any): Observable<User[]>  {
      // add authorization header with jwt token
-     const headers = new Headers({ 'Authorization': 'Bearer ' + this.authenticationService.token });
-     const options = new RequestOptions({ headers: headers });
+     const headers = new Headers({ 'Authorization': 'Bearer ' + this.authenticationService.token, 'p' : p , 'number' : number  });
+     const options = new RequestOptions({ headers: headers,  });
 
      // get users from api
     return this._http.get(this._getUrl, options)
       .map((response: Response) => response.json());
    }
+  getUsersCount() {
+    const headers = new Headers({'Content-Type': 'application/json'});
+    const options = new RequestOptions({headers: headers});
+    // get users from api
+    console.log('From api');
+   return this._http.get(this._getUrl + 'count')
+     .map((response: Response) => {
+       // login successful if there's a jwt token in the response
+       const count = response.json() && response.json().count;
+        console.log(count);
+        return count;
+     });
+  }
    addUser(user: User) {
     const headers = new Headers({'Content-Type': 'application/json'});
     const options = new RequestOptions({headers: headers});
@@ -43,6 +57,20 @@ export class UserService {
   deleteUser(user: User) {
     console.log(user);
     return this._http.delete(this._deleteUrl + user._id)
+      .map((response: Response) => response.json());
+  }
+
+  getSearchUser(searchUser: any): Observable<User[]>  {
+    // add authorization header with jwt token
+    const firstString = searchUser.split(' ')[0];
+    const secondString = searchUser.split(' ')[1];
+    console.log(firstString);
+    console.log(secondString);
+    const headers = new Headers({ 'Authorization': 'Bearer ' + this.authenticationService.token, 'search1' : firstString , 'search2' : secondString  });
+    const options = new RequestOptions({ headers: headers,  });
+
+    // get users from api
+    return this._http.get(this._getUrl + 'search', options)
       .map((response: Response) => response.json());
   }
 }

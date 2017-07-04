@@ -7,3 +7,6 @@
   left:0;
   top:0;
 }
+input.ng-invalid, select.ng-invalid{
+  border: solid 2px red;
+}

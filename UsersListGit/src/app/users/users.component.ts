@@ -17,7 +17,7 @@ export class UsersComponent implements OnInit {
   constructor(private _userService: UserService) { }
 
   ngOnInit() {
-    this._userService.getUsers()
+    this._userService.getUsers(1, 5)
       .subscribe(resUserData => this.users = resUserData);
   }
  onSelectUser(user: any) {
@@ -57,4 +57,7 @@ export class UsersComponent implements OnInit {
      });
    this.selectedUser = null;
   };
+  onPaginationEvent(Instruction: any) {
+
+  }
 }

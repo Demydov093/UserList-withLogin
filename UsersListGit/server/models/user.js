@@ -12,7 +12,7 @@ const userSchema = new Schema({
     lastname: {type: String, minlength: 2, maxlength: 60},
     email: {type: String, maxlength: 99, required: true},
     dateOfBirth: {type: Date},
-    password: {type: String, match: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/},
+    password: {type: String, match: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}$/},
     role: {type: String, enum: ["admin", "viewer"]}
 
 });
@@ -45,21 +45,12 @@ userSchema.pre("save", function (next) {
 });
 
 userSchema.methods.comparePassword = function (candidatePassword, cb) {
-    console.log(candidatePassword);
-    console.log(this.password);
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
         if (err) {
             return cb(err);
         }
-            cb(null, isMatch);
+        cb(null, isMatch);
     });
 };
-  // true  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-  //       if (err) {
-  //           return cb(err);
-  //       }
-  //       , isMatch);
-  //   });
-
 
 module.exports = mongoose.model("user", userSchema, "user");

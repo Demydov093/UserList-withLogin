@@ -16,8 +16,51 @@ mongoose.connect(db, function (err) {
 })
 router.get("/users", function (req, res) {
     console.log("Get all users");
-    if (req.get("Authorization") === "Bearer fake-jwt-token") {
-        User.find({})
+    if (req.get("Authorization") === "Bearer my-jwt-token") {
+        const p = +req.get("p") - 1;
+        const number = +req.get("number");
+        console.log(p);
+        console.log(number);
+        User.find({}).limit(number).skip(number * p)
+            .exec(function (err, users) {
+                if (err) {
+                    console.log("Error get users");
+                } else {
+                    res.json(users);
+
+                }
+            });
+    }
+});
+router.get("/userscount", function (req, res) {
+    console.log("Get all users count");
+    User.count({})
+        .exec(function (err, count) {
+            if (err) {
+                console.log("Error get users");
+            } else {
+                res.json({success: true, count: count});
+                console.log(count);
+            }
+        });
+});
+router.get("/userssearch", function (req, res) {
+    console.log("Get search");
+    const search1 = new RegExp(`^${req.get("search1")}.*$`, 'i');
+    const search2 = new RegExp(`^${req.get("search2")}.*$`, 'i');
+    console.log(req.get("search1"));
+    console.log(req.get("search2"));
+    if (req.get("search2") === "" || req.get("search2") === " ") {
+        User.find({ $or: [{name: search1}, {lastname: search1}, {email: search1}]})
+            .exec(function (err, users) {
+                if (err) {
+                    console.log("Error get users");
+                } else {
+                    res.json(users);
+                }
+            });
+    } else {
+        User.find({ $and: [{name: req.get("search1")}, {lastname: req.get("search2")}]})
             .exec(function (err, users) {
                 if (err) {
                     console.log("Error get users");
@@ -27,6 +70,7 @@ router.get("/users", function (req, res) {
             });
     }
 });
+
 router.get("/users/:id", function (req, res) {
     console.log("Get one user");
     User.findById(req.params.id)
@@ -84,7 +128,6 @@ router.delete("/user/:id", function (req, res) {
 });
 
 router.post("/authenticate", function (req, res) {
-    var enter;
     const name = req.body.name;
     User.findOne({name: name})
         .then(function (user) {
@@ -100,15 +143,13 @@ router.post("/authenticate", function (req, res) {
                         throw err;
                     }
                     console.log("Compare")
-                    console.log(isMatch); // -&gt; Password123: true
+                    console.log(isMatch); // true
                     if (!isMatch) {
                         console.log("No pass");
-                        enter = false;
                         res.json({success: false, message: "Wrong pass"});
                     } else {
                         console.log("Pass");
-                        enter = true;
-                        res.json({success: true, token: "fake-jwt-token"});
+                        res.json({success: true, token: "my-jwt-token"});
                     }
                 });
             }

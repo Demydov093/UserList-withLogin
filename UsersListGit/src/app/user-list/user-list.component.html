@@ -1,3 +1,7 @@
+<div><input type="text" [(ngModel)]="search"  >
+<button type="button" (click)="searchUser()" class="btn btn-primary">Search</button>
+</div>
+
 <table class="table table-hover">
   <thead>
   <tr>
@@ -12,7 +16,7 @@
   </thead>
 
   <tbody>
-  <tr *ngFor="let user of users | paginate: { itemsPerPage: number, currentPage: p }">
+  <tr *ngFor="let user of users | paginate: { itemsPerPage: number, currentPage: p, totalItems: totalcount }">
     <td>{{user.name}}</td>
     <td>{{user.lastname}}</td>
     <td>{{user.email}}</td>
@@ -24,6 +28,6 @@
   </tbody>
   <div style="display: inline-block">
   <p>Items per page</p>
-  <input type="number" [(ngModel)]="number"></div>
-  <pagination-controls (pageChange)=" p =$event" style="display: inline-block; width: 250px;"></pagination-controls>
+  <input type="number" [(ngModel)]="number" (ngModelChange)="pagination(p =$event)" ></div>
+  <pagination-controls (pageChange)=" p =$event" style="display: inline-block; width: 250px;" (pageChange)="pagination(p =$event)"></pagination-controls>
 </table>

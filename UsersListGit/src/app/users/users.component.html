@@ -25,8 +25,8 @@
        </div>
        <div class="form-group">
          <label>Password</label>
-         <small>(Example: aS12, Min 4 Max 8 chars)</small>
-         <input type="password" class="form-control" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$" name="password" ngModel>
+         <small>(Example: aS12, Min 4)</small>
+         <input type="password" class="form-control" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}$" name="password" ngModel>
        </div>
        <div class="form-group">
          <label>Role</label>
@@ -45,7 +45,7 @@
 <div class = "row">
 <div class="col-sm-9">
   <button (click)="newUser()" type="button" class="btn btn-success btn-block">New User</button>
-   <app-user-list (SelectUser)="onSelectUser($event)" (deleteUserEvent) = "onDeleteUserEvent($event)"  [users]="users"></app-user-list>
+   <app-user-list (SelectUser)="onSelectUser($event)" (deleteUserEvent) = "onDeleteUserEvent($event)" (paginatonEvent) = "onPaginationEvent($event)"   [users]="users"></app-user-list>
   </div>
 </div>
 <div class = "row">

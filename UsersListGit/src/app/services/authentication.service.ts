@@ -14,15 +14,12 @@ export class AuthenticationService {
 }
 
 login(name: String, password: String): Observable<boolean> {
-    console.log(name, password);
-
   const headers = new Headers({'Content-Type': 'application/json'});
   const options = new RequestOptions({headers: headers});
   return this._http.post('/api/authenticate', JSON.stringify({name: name, password: password }), options)
     .map((response: Response) => {
       // login successful if there's a jwt token in the response
       const token = response.json() && response.json().token;
-      console.log(token);
       if (token) {
         // set token property
         this.token = token;
