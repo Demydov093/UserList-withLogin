@@ -34,17 +34,16 @@ router.get("/users", function (req, res) {
 });
 router.get("/userscount", function (req, res) {
     console.log("Get all users count");
-    if (req.get("Authorization") === "Bearer my-jwt-token") {
-        User.count({})
-            .exec(function (err, count) {
-                if (err) {
-                    console.log("Error get users");
-                } else {
-                    res.json({success: true, count: count});
-                    console.log(count);
-                }
-            });
-    }
+    User.count({})
+        .exec(function (err, count) {
+            if (err) {
+                console.log("Error get users");
+            } else {
+                res.json({success: true, count: count});
+                console.log(count);
+            }
+        });
+
 });
 router.get("/userssearch", function (req, res) {
     console.log("Get search");

@@ -19,17 +19,21 @@ export class UserListComponent implements OnInit {
   public search: string;
   public p: number;
   public totalcount: number;
-  constructor(private _userService: UserService) { }
-
-  ngOnInit() {
+  constructor(private _userService: UserService) {
     this.number = 5;
     this._userService.getUsersCount()
       .subscribe(resData => {
         this.totalcount = resData;
-      console.log(this.totalcount);
+        console.log(this.totalcount);
       });
-    this._userService.getUsers(this.p, this.number)
-      .subscribe(resUserData => this.users = resUserData);
+    // this._userService.getUsers(this.p, this.number)
+    //   .subscribe(resUserData => this.users = resUserData);
+    // console.log(this.number);
+    // console.log(this.p);
+    // console.log(this.totalcount); }
+  }
+  ngOnInit() {
+
   }
    onSelect(user: User) {
     this.SelectUser.emit(user);
@@ -40,6 +44,9 @@ export class UserListComponent implements OnInit {
   pagination(p: any) {
     this._userService.getUsers(p, this.number)
       .subscribe(resUserData => this.users = resUserData);
+    console.log(this.number);
+    console.log(this.p);
+    console.log(this.totalcount);
   }
   searchUser() {
     console.log(this.search);

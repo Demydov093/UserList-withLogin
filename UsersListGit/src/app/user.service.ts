@@ -29,7 +29,7 @@ export class UserService {
       .map((response: Response) => response.json());
    }
   getUsersCount() {
-    const headers = new Headers({'Content-Type': 'application/json'});
+    const headers = new Headers({'Authorization': 'Bearer ' + this.authenticationService.token, 'Content-Type': 'application/json'});
     const options = new RequestOptions({headers: headers});
     // get users from api
     console.log('From api');
